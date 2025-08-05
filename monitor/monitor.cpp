@@ -22,39 +22,59 @@ double now_sec() {
 
 // 包名 → 预读文件列表的映射
 std::unordered_map<std::string, std::string> preload_map = {
-    {"com.tencent.ig",        "/data/local/tmp/PUBG_large.txt"},
-    {"com.zhiliaoapp.musically", "TikTok_large.txt"},
+    {"com.booking",            "./log/Booking_large.txt"},
+    {"com.adobe.psmobile",     "./log/Photoshop_large.txt"},
+    {"com.twitter.android",    "./log/Twitter_large.txt"},
+    {"com.tencent.ig",        "./log/PUBG_large.txt"},
+    {"com.zhiliaoapp.musically", "./log/TikTok_large.txt"},
+    {"com.xingin.xhs",         "./log/RedNote_large.txt"},
+    {"com.lemon.lvoverseas",   "./log/Capcut_large.txt"},
+    {"com.campmobile.snow",    "./log/Snow_large.txt"},
+    {"com.google.earth",       "./log/GoogleEarth_large.txt"},
+    {"com.roblox.client",      "./log/Roblox_large.txt"},
+    {"com.tinder",             "./log/Tinder_large.txt"},
+    {"com.einnovation.temu",   "./log/Temu_large.txt"},
+    {"com.ubercab",            "./log/Uber_large.txt"},
+
     // 添加更多 app 映射
 };
 
 int main() {
+    // 打开 logcat 进程
     FILE* fp = popen("logcat -v brief ActivityTaskManager:I *:S", "r");
     if (!fp) {
         perror("popen logcat");
         return 1;
     }
 
+    // 创建一个无序映射来记录上一个触发时间
     std::unordered_map<std::string, double> last_trigger_time;
     char line[1024];
 
+    // 加载预加载准备数据
     preload_prepare("PUBG_large.txt", pubg_chunks);
-    std::cout<<pubg_chunks.size()<<std::endl;
+    std::cout << pubg_chunks.size() << std::endl;
 
+    // 逐行读取 logcat 输出
     while (fgets(line, sizeof(line), fp)) {
         std::string str_line(line);
 
         // 找到 START u0 且匹配任意包名
         if (str_line.find("START u0") != std::string::npos) {
+            // 遍历预加载映射
             for (const auto& [pkg, filelist] : preload_map) {
+                // 如果找到匹配的包名
                 if (str_line.find(pkg) != std::string::npos) {
                     double now = now_sec();
                     double& last = last_trigger_time[pkg];
 
+                    // 如果当前时间与上次触发时间之差大于或等于最小间隔时间
                     if (now - last >= MIN_INTERVAL) {
                         std::cout << "[trigger] Launch of " << pkg << " → preload " << filelist << std::endl;
                         preload_execute(pubg_chunks);
                         last = now;
                     } else {
+                        // 如果时间间隔小于最小间隔时间，则跳过
                         std::cout << "[skip] " << pkg << " triggered too soon (" << (now - last) << "s), skip\n";
                     }
                     break; // 匹配一个包名就跳出
@@ -63,6 +83,7 @@ int main() {
         }
     }
 
+    // 关闭 logcat 进程
     pclose(fp);
     return 0;
 }
