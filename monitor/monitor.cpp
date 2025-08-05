@@ -22,19 +22,19 @@ double now_sec() {
 
 // 包名 → 预读文件列表的映射
 std::unordered_map<std::string, std::string> preload_map = {
-    {"com.booking",            "./log/Booking_large.txt"},
-    {"com.adobe.psmobile",     "./log/Photoshop_large.txt"},
-    {"com.twitter.android",    "./log/Twitter_large.txt"},
-    {"com.tencent.ig",        "./log/PUBG_large.txt"},
-    {"com.zhiliaoapp.musically", "./log/TikTok_large.txt"},
-    {"com.xingin.xhs",         "./log/RedNote_large.txt"},
-    {"com.lemon.lvoverseas",   "./log/Capcut_large.txt"},
-    {"com.campmobile.snow",    "./log/Snow_large.txt"},
-    {"com.google.earth",       "./log/GoogleEarth_large.txt"},
-    {"com.roblox.client",      "./log/Roblox_large.txt"},
-    {"com.tinder",             "./log/Tinder_large.txt"},
-    {"com.einnovation.temu",   "./log/Temu_large.txt"},
-    {"com.ubercab",            "./log/Uber_large.txt"},
+    {"com.booking",            "/data/local/tmp/log/Booking_large.txt"},
+    {"com.adobe.psmobile",     "/data/local/tmp/log/Photoshop_large.txt"},
+    {"com.twitter.android",    "/data/local/tmp/log/Twitter_large.txt"},
+    {"com.tencent.ig",        "/data/local/tmp/log/PUBG_large.txt"},
+    {"com.zhiliaoapp.musically", "/data/local/tmp/log/TikTok_large.txt"},
+    {"com.xingin.xhs",         "/data/local/tmp/log/RedNote_large.txt"},
+    {"com.lemon.lvoverseas",   "/data/local/tmp/log/Capcut_large.txt"},
+    {"com.campmobile.snow",    "/data/local/tmp/log/Snow_large.txt"},
+    {"com.google.earth",       "/data/local/tmp/log/GoogleEarth_large.txt"},
+    {"com.roblox.client",      "/data/local/tmp/log/Roblox_large.txt"},
+    {"com.tinder",             "/data/local/tmp/log/Tinder_large.txt"},
+    {"com.einnovation.temu",   "/data/local/tmp/log/Temu_large.txt"},
+    {"com.ubercab",            "/data/local/tmp/log/Uber_large.txt"},
 
     // 添加更多 app 映射
 };
